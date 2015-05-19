@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadModel.Sql", "ReadModel.Sql\ReadModel.Sql.csproj", "{A04666C3-70CA-4669-9B3C-B97FF308F528}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadModel.Sql.Test", "ReadModel.Sql.Test\ReadModel.Sql.Test.csproj", "{D479DAFC-215A-439E-ABE7-A8D1CE474515}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A04666C3-70CA-4669-9B3C-B97FF308F528}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A04666C3-70CA-4669-9B3C-B97FF308F528}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A04666C3-70CA-4669-9B3C-B97FF308F528}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A04666C3-70CA-4669-9B3C-B97FF308F528}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D479DAFC-215A-439E-ABE7-A8D1CE474515}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D479DAFC-215A-439E-ABE7-A8D1CE474515}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D479DAFC-215A-439E-ABE7-A8D1CE474515}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D479DAFC-215A-439E-ABE7-A8D1CE474515}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
