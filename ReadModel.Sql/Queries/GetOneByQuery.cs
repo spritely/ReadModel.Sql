@@ -37,14 +37,14 @@ namespace Spritely.ReadModel.Sql
         where TDatabase : ReadModelDatabase<TDatabase>
     {
         private readonly JsonSerializerSettings jsonSerializerSettings;
-        private readonly ReadModelDatabase<TDatabase> readModelDatabase;
+        private readonly TDatabase readModelDatabase;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="GetOneByQueryHandler" /> class.
         /// </summary>
         /// <param name="readModelDatabase">The read model database.</param>
         /// <param name="jsonSerializerSettings">The json serializer settings.</param>
-        public GetOneByQueryHandler(ReadModelDatabase<TDatabase> readModelDatabase, JsonSerializerSettings jsonSerializerSettings = null)
+        public GetOneByQueryHandler(TDatabase readModelDatabase, JsonSerializerSettings jsonSerializerSettings = null)
         {
             if (readModelDatabase == null)
             {
