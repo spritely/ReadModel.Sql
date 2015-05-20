@@ -41,7 +41,7 @@ namespace Spritely.ReadModel.Sql
         where TDatabase : ReadModelDatabase<TDatabase>
     {
         private readonly JsonSerializerSettings jsonSerializerSettings;
-        private readonly ReadModelDatabase<TDatabase> readModelDatabase;
+        private readonly TDatabase readModelDatabase;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="AddTearsheetCommandHandler" /> class.
@@ -49,7 +49,7 @@ namespace Spritely.ReadModel.Sql
         /// <param name="readModelDatabase">The read model database.</param>
         /// <param name="jsonSerializerSettings">The json serializer settings.</param>
         public AddOrUpdateCommandHandler(
-            ReadModelDatabase<TDatabase> readModelDatabase,
+            TDatabase readModelDatabase,
             JsonSerializerSettings jsonSerializerSettings = null)
         {
             if (readModelDatabase == null)

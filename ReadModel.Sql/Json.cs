@@ -15,7 +15,7 @@ namespace Spritely.ReadModel.Sql
     /// <summary>
     ///     Static container for Json settings defaults for all queries.
     /// </summary>
-    public static class Json
+    internal static class Json
     {
         /// <summary>
         ///     Initializes static members of the <see cref="Json" /> class.
