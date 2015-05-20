@@ -11,6 +11,7 @@ namespace Spritely.ReadModel.Sql.Test
     using System.Data;
     using System.Data.SqlClient;
     using System.Reflection;
+    using Spritely.Cqrs;
     using Spritely.Test.FluentMigratorSqlDatabase;
 
     public class TestReadModelDatabase : ReadModelDatabase<TestReadModelDatabase>, IDisposable
@@ -20,6 +21,8 @@ namespace Spritely.ReadModel.Sql.Test
             this.TestDatabase = new TestDatabase("Create_creates_runner_capable_of_populating_database.mdf");
 
             this.TestDatabase.Create();
+
+            this.ConnectionSettings = new DatabaseConnectionSettings();
 
             // Use TestMigration class in this assembly
             var runner = FluentMigratorRunnerFactory.Create(Assembly.GetExecutingAssembly(), this.TestDatabase.ConnectionString);
