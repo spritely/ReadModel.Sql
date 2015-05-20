@@ -51,6 +51,11 @@ namespace Spritely.ReadModel.Sql
                 throw new ArgumentNullException("readModelDatabase");
             }
 
+            if (readModelDatabase.ConnectionSettings == null)
+            {
+                throw new ArgumentNullException("readModelDatabase.ConnectionSettings");
+            }
+
             this.readModelDatabase = readModelDatabase;
             this.jsonSerializerSettings = jsonSerializerSettings ?? Json.SerializerSettings;
         }
