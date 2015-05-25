@@ -8,6 +8,7 @@
 namespace Spritely.ReadModel.Sql.Test
 {
     using System;
+    using System.Linq;
     using NUnit.Framework;
 
     [TestFixture]
@@ -18,13 +19,9 @@ namespace Spritely.ReadModel.Sql.Test
         {
             using (var testReadModelDatabase = new TestReadModelDatabase())
             {
-                var expectedModel = new TestModel()
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "Handle_returns_expected_object"
-                };
+                var models = testReadModelDatabase.AddModelItems(namePrefix: "Handle_returns_expected_object_", count: 3);
 
-                testReadModelDatabase.AddOrUpdateModel(expectedModel);
+                var expectedModel = models.Skip(1).First();
 
                 var query = new GetByIdQuery<Guid, TestModel>
                 {
@@ -46,13 +43,7 @@ namespace Spritely.ReadModel.Sql.Test
         {
             using (var testReadModelDatabase = new TestReadModelDatabase())
             {
-                var model = new TestModel()
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "Handle_returns_null_when_no_match_found"
-                };
-
-                testReadModelDatabase.AddOrUpdateModel(model);
+                testReadModelDatabase.AddModelItems(namePrefix: "Handle_returns_null_when_no_match_found_", count: 3);
 
                 var query = new GetByIdQuery<Guid, TestModel>
                 {

@@ -57,8 +57,10 @@
   <ItemGroup>
     <Compile Include="%28Spritely.Recipes%29\Functional.cs" />
     <Compile Include="Commands\AddOrUpdateCommandTest.cs" />
+    <Compile Include="Commands\DeleteByCommandTest.cs" />
+    <Compile Include="Commands\DeleteAllCommandTest.cs" />
     <Compile Include="Queries\GetAllQueryTest.cs" />
-    <Compile Include="Queries\GetManyByIdQueryTest.cs" />
+    <Compile Include="Queries\GetManyByQueryTest.cs" />
     <Compile Include="TestReadModelDatabaseExtensions.cs" />
     <Compile Include="TestModel.cs" />
     <Compile Include="TestReadModelMigration.cs" />

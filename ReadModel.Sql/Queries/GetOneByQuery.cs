@@ -74,7 +74,7 @@ namespace Spritely.ReadModel.Sql
 
             TResult result;
 
-            var queryParameters = query.GetProperties().GetWhereParts().JoinAllWithAnd();
+            var queryParameters = query.ToQueryParameters();
 
             using (var connection = this.readModelDatabase.CreateConnection())
             {

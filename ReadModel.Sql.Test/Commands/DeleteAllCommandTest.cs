@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="GetAllQueryTest.cs">
+// <copyright file="DeleteAllCommandTest.cs">
 //   Copyright (c) 2015. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -10,30 +10,25 @@ namespace Spritely.ReadModel.Sql.Test
     using NUnit.Framework;
 
     [TestFixture]
-    public class GetAllQueryTest
+    public class DeleteAllCommandTest
     {
         [Test]
-        public void Handle_returns_expected_objects()
+        public void Handle_deletes_all_objects()
         {
             using (var testReadModelDatabase = new TestReadModelDatabase())
             {
-                var expectedCount = 3;
-                testReadModelDatabase.AddModelItems(namePrefix: "Handle_returns_expected_objects_", count: expectedCount);
+                testReadModelDatabase.AddModelItems(namePrefix: "Handle_deletes_all_objects_", count: 3);
+
+                var command = new DeleteAllCommand
+                {
+                    ModelType = "TestModel"
+                };
+
+                var commandHandler = new DeleteAllCommandHandler<TestReadModelDatabase>(testReadModelDatabase);
+                commandHandler.Handle(command);
 
                 var results = testReadModelDatabase.GetAllModelItems();
 
-                Assert.That(results.Count, Is.EqualTo(expectedCount));
-            }
-        }
-
-        [Test]
-        public void Handle_returns_empty_when_no_results_found()
-        {
-            using (var testReadModelDatabase = new TestReadModelDatabase())
-            {
-                var results = testReadModelDatabase.GetAllModelItems();
-
-                Assert.That(results, Is.Not.Null);
                 Assert.That(results.Count, Is.EqualTo(0));
             }
         }

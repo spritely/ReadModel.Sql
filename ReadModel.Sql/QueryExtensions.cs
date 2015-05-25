@@ -15,21 +15,64 @@ namespace Spritely.ReadModel.Sql
 
     internal static class QueryExtensions
     {
-        public static IEnumerable<KeyValuePair<string, object>> GetProperties<TResult>(this IQuery<TResult> query)
+        public static string ToCommandParameters(this ICommand command)
         {
-            var type = query.GetType();
-
-            var properties = type.GetProperties().Where(p => p.Name != "ModelType");
-
-            return properties.Select(p => new KeyValuePair<string, object>(p.Name, p.GetValue(query)));
+            return command.ToParameters();
         }
 
-        public static IEnumerable<string> GetWhereParts(this IEnumerable<KeyValuePair<string, object>> parameters)
+        public static string ToQueryParameters<TResult>(this IQuery<TResult> query)
+        {
+            return query.ToParameters();
+        }
+
+        private static string ToParameters(this object instance)
+        {
+            var regularWhereParts = instance.GetRegularProperties().GetWhereParts();
+            var inWhereParts = instance.GetEnumerableProperties().GetWhereInParts();
+            var queryParameters = regularWhereParts.Concat(inWhereParts).JoinAllWithAnd();
+
+            return queryParameters;
+        }
+
+        private static IEnumerable<KeyValuePair<string, object>> GetEnumerableProperties(this object instance)
+        {
+            var type = instance.GetType();
+
+            var allProperties = type.GetProperties().Where(p => p.Name != "ModelType");
+
+            var enumerableProperties = allProperties.Where(
+                p => p.PropertyType.IsGenericType && p.PropertyType.GetGenericTypeDefinition() == typeof(IEnumerable<>)).ToList();
+
+            return enumerableProperties.Select(p => new KeyValuePair<string, object>(p.Name, p.GetValue(instance)));
+        }
+
+        private static IEnumerable<KeyValuePair<string, object>> GetRegularProperties(this object instance)
+        {
+            var type = instance.GetType();
+
+            var allProperties = type.GetProperties().Where(p => p.Name != "ModelType");
+
+            var regularProperties = allProperties.Where(
+                p => !(p.PropertyType.IsGenericType && p.PropertyType.GetGenericTypeDefinition() == typeof(IEnumerable<>))).ToList();
+
+            return regularProperties.Select(p => new KeyValuePair<string, object>(p.Name, p.GetValue(instance)));
+        }
+
+        private static IEnumerable<string> GetWhereParts(this IEnumerable<KeyValuePair<string, object>> parameters)
         {
             return parameters.Select(p => string.Format("[{0}] = @{0}", p.Key));
         }
 
-        public static string JoinAllWithAnd(this IEnumerable<string> parts)
+        private static IEnumerable<string> GetWhereInParts(this IEnumerable<KeyValuePair<string, object>> parameters)
+        {
+            return parameters.Select(
+                p =>
+                    p.Key.ToLowerInvariant().StartsWith("not")
+                        ? string.Format("{0} not in @{1}", p.Key.Substring(3), p.Key)
+                        : string.Format("{0} in @{0}", p.Key));
+        }
+
+        private static string JoinAllWithAnd(this IEnumerable<string> parts)
         {
             var result = new StringBuilder();
 

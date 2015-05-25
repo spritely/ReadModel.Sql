@@ -7,6 +7,9 @@
 
 namespace Spritely.ReadModel.Sql.Test
 {
+    using System;
+    using System.Collections.Generic;
+
     internal static class TestReadModelDatabaseExtensions
     {
         public static void AddOrUpdateModel(this TestReadModelDatabase testReadModelDatabase, TestModel model)
@@ -20,6 +23,43 @@ namespace Spritely.ReadModel.Sql.Test
             var commandHandler = new AddOrUpdateCommandHandler<TestReadModelDatabase, TestModel>(testReadModelDatabase);
 
             commandHandler.Handle(command);
+        }
+
+        public static ICollection<TestModel> AddModelItems(
+            this TestReadModelDatabase testReadModelDatabase,
+            string namePrefix,
+            int count = 3)
+        {
+            var testModels = new List<TestModel>();
+
+            for (var i = 0; i < count; i++)
+            {
+                var model = new TestModel()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = namePrefix + i
+                };
+
+                testModels.Add(model);
+
+                testReadModelDatabase.AddOrUpdateModel(model);
+            }
+
+            return testModels;
+        }
+
+        public static IReadOnlyCollection<TestModel> GetAllModelItems(this TestReadModelDatabase testReadModelDatabase)
+        {
+            var query = new GetAllQuery<TestModel>
+            {
+                ModelType = "TestModel"
+            };
+
+            var queryHandler = new GetAllQueryHandler<TestReadModelDatabase, TestModel>(testReadModelDatabase);
+
+            var results = queryHandler.Handle(query);
+
+            return results;
         }
     }
 }
