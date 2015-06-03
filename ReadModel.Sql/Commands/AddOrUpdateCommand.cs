@@ -8,6 +8,8 @@
 namespace Spritely.ReadModel.Sql
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using Dapper;
     using Newtonsoft.Json;
     using Spritely.Cqrs;
@@ -48,6 +50,8 @@ namespace Spritely.ReadModel.Sql
         /// </summary>
         /// <param name="readModelDatabase">The read model database.</param>
         /// <param name="jsonSerializerSettings">The json serializer settings.</param>
+        [SuppressMessage("Microsoft.Usage", "CA2208:InstantiateArgumentExceptionsCorrectly",
+            Justification = "ArgumentExceptions do use argument names, but provide additional information.")]
         public AddOrUpdateCommandHandler(
             TDatabase readModelDatabase,
             JsonSerializerSettings jsonSerializerSettings = null)
@@ -73,7 +77,12 @@ namespace Spritely.ReadModel.Sql
         /// <param name="command">The command.</param>
         public void Handle(AddOrUpdateCommand<TModel> command)
         {
-            var sql = string.Format(
+            if (command == null)
+            {
+                throw new ArgumentNullException("command");
+            }
+
+            var sql = string.Format(CultureInfo.InvariantCulture,
                 @"
 if exists(select * from [{0}] where [{1}] = @Id) begin
     update [{0}] set [{2}] = @Model, [{3}] = getutcdate() where [{1}] = @Id

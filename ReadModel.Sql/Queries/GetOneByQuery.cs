@@ -8,6 +8,8 @@
 namespace Spritely.ReadModel.Sql
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
     using Dapper;
     using Newtonsoft.Json;
@@ -44,6 +46,8 @@ namespace Spritely.ReadModel.Sql
         /// </summary>
         /// <param name="readModelDatabase">The read model database.</param>
         /// <param name="jsonSerializerSettings">The json serializer settings.</param>
+        [SuppressMessage("Microsoft.Usage", "CA2208:InstantiateArgumentExceptionsCorrectly",
+            Justification = "ArgumentExceptions do use argument names, but provide additional information.")]
         public GetOneByQueryHandler(TDatabase readModelDatabase, JsonSerializerSettings jsonSerializerSettings = null)
         {
             if (readModelDatabase == null)
@@ -79,7 +83,9 @@ namespace Spritely.ReadModel.Sql
             using (var connection = this.readModelDatabase.CreateConnection())
             {
                 result = connection
-                    .Query(string.Format("select * from [{0}] where {1}", query.ModelType, queryParameters), query)
+                    .Query(
+                        string.Format(CultureInfo.InvariantCulture, "select * from [{0}] where {1}", query.ModelType, queryParameters),
+                        query)
                     .Select<dynamic, TResult>(
                         t =>
                             JsonConvert.DeserializeObject<TResult>(

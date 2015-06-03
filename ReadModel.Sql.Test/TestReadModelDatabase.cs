@@ -10,11 +10,12 @@ namespace Spritely.ReadModel.Sql.Test
     using System;
     using System.Data;
     using System.Data.SqlClient;
+    using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
     using Spritely.Cqrs;
     using Spritely.Test.FluentMigratorSqlDatabase;
 
-    public class TestReadModelDatabase : ReadModelDatabase<TestReadModelDatabase>, IDisposable
+    public sealed class TestReadModelDatabase : ReadModelDatabase<TestReadModelDatabase>, IDisposable
     {
         public TestReadModelDatabase()
         {
@@ -31,6 +32,8 @@ namespace Spritely.ReadModel.Sql.Test
 
         public TestDatabase TestDatabase { get; set; }
 
+        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope",
+            Justification = "This is by design. User is expected to dispose returned object.")]
         public override IDbConnection CreateConnection()
         {
             var connection = new SqlConnection(this.TestDatabase.ConnectionString);

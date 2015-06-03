@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DeleteByIdCommandTest.cs">
+// <copyright file="DeleteByCommandTest.cs">
 //   Copyright (c) 2015. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -7,10 +7,11 @@
 
 namespace Spritely.ReadModel.Sql.Test
 {
-    using NUnit.Framework;
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using NUnit.Framework;
 
     [TestFixture]
     public class DeleteByCommandTest
@@ -39,7 +40,8 @@ namespace Spritely.ReadModel.Sql.Test
             }
         }
 
-        [Test]
+        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "within",
+            Justification = "These are not compound words here."), Test]
         public void Handle_deletes_expected_objects_with_in_query()
         {
             using (var testReadModelDatabase = new TestReadModelDatabase())
@@ -85,11 +87,13 @@ namespace Spritely.ReadModel.Sql.Test
 
         private class DeleteManyByIdInCommand : DeleteByCommand
         {
+            [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Code is called with reflection.")]
             public IEnumerable<Guid> Id { get; set; }
         }
 
         private class DeleteManyByIdNotInCommand : DeleteByCommand
         {
+            [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Code is called with reflection.")]
             public IEnumerable<Guid> NotId { get; set; }
         }
     }

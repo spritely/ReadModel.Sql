@@ -7,7 +7,9 @@
 
 namespace Spritely.ReadModel.Sql
 {
+    using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Text;
     using Spritely.Cqrs;
@@ -60,16 +62,16 @@ namespace Spritely.ReadModel.Sql
 
         private static IEnumerable<string> GetWhereParts(this IEnumerable<KeyValuePair<string, object>> parameters)
         {
-            return parameters.Select(p => string.Format("[{0}] = @{0}", p.Key));
+            return parameters.Select(p => string.Format(CultureInfo.InvariantCulture, "[{0}] = @{0}", p.Key));
         }
 
         private static IEnumerable<string> GetWhereInParts(this IEnumerable<KeyValuePair<string, object>> parameters)
         {
             return parameters.Select(
                 p =>
-                    p.Key.ToLowerInvariant().StartsWith("not")
-                        ? string.Format("{0} not in @{1}", p.Key.Substring(3), p.Key)
-                        : string.Format("{0} in @{0}", p.Key));
+                    p.Key.StartsWith("not", StringComparison.OrdinalIgnoreCase)
+                        ? string.Format(CultureInfo.InvariantCulture, "{0} not in @{1}", p.Key.Substring(3), p.Key)
+                        : string.Format(CultureInfo.InvariantCulture, "{0} in @{0}", p.Key));
         }
 
         private static string JoinAllWithAnd(this IEnumerable<string> parts)

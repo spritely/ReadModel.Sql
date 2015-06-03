@@ -8,13 +8,16 @@
 namespace Spritely.ReadModel.Sql.Test
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using Newtonsoft.Json;
     using NUnit.Framework;
 
     [TestFixture]
     public class AddOrUpdateCommandTest
     {
-        [Test]
+        [SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities",
+            Justification = "There is nothing unsafe in here since this is just a test."), Test]
         public void Handle_adds_row_when_none_exist()
         {
             using (var testReadModelDatabase = new TestReadModelDatabase())
@@ -38,7 +41,10 @@ namespace Spritely.ReadModel.Sql.Test
                 testReadModelDatabase.TestDatabase.ExecuteCommand(
                     c =>
                     {
-                        c.CommandText = string.Format("select Model from TestModel where Id = '{0}'", model.Id);
+                        c.CommandText = string.Format(
+                            CultureInfo.InvariantCulture,
+                            "select Model from TestModel where Id = '{0}'",
+                            model.Id);
                         using (var dataReader = c.ExecuteReader())
                         {
                             dataReader.Read();
@@ -49,7 +55,8 @@ namespace Spritely.ReadModel.Sql.Test
             }
         }
 
-        [Test]
+        [SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities",
+            Justification = "There is nothing unsafe in here since this is just a test."), Test]
         public void Handle_updates_row_when_one_exists()
         {
             using (var testReadModelDatabase = new TestReadModelDatabase())
@@ -76,7 +83,10 @@ namespace Spritely.ReadModel.Sql.Test
                 testReadModelDatabase.TestDatabase.ExecuteCommand(
                     c =>
                     {
-                        c.CommandText = string.Format("select Model from TestModel where Id = '{0}'", model.Id);
+                        c.CommandText = string.Format(
+                            CultureInfo.InvariantCulture,
+                            "select Model from TestModel where Id = '{0}'",
+                            model.Id);
                         using (var dataReader = c.ExecuteReader())
                         {
                             dataReader.Read();

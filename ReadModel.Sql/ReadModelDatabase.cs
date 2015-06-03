@@ -8,6 +8,7 @@
 namespace Spritely.ReadModel.Sql
 {
     using System.Data;
+    using System.Diagnostics.CodeAnalysis;
     using Spritely.Cqrs;
 
     /// <summary>
@@ -27,6 +28,8 @@ namespace Spritely.ReadModel.Sql
         ///     Creates a database connection (user is expected to properly dispose of instance).
         /// </summary>
         /// <returns>A new database connection (user is expected to properly dispose of instance)</returns>
+        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope",
+            Justification = "This method does not dispose by design. User is expected to dispose of method result.")]
         public virtual IDbConnection CreateConnection()
         {
             var connection = this.ConnectionSettings.CreateSqlConnection();

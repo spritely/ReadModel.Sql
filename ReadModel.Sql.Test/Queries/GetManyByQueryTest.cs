@@ -9,6 +9,7 @@ namespace Spritely.ReadModel.Sql.Test
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using NUnit.Framework;
 
@@ -61,7 +62,8 @@ namespace Spritely.ReadModel.Sql.Test
             }
         }
 
-        [Test]
+        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "within",
+            Justification = "These are not compound words here.")]
         public void Handle_returns_expected_objects_with_in_query()
         {
             using (var testReadModelDatabase = new TestReadModelDatabase())
@@ -107,16 +109,19 @@ namespace Spritely.ReadModel.Sql.Test
 
         private class GetManyByIdInQuery : GetManyByQuery<TestModel>
         {
+            [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Code is called with reflection.")]
             public IEnumerable<Guid> Id { get; set; }
         }
 
         private class GetManyByIdNotInQuery : GetManyByQuery<TestModel>
         {
+            [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Code is called with reflection.")]
             public IEnumerable<Guid> NotId { get; set; }
         }
 
         private class GetManyByIdQuery : GetManyByQuery<TestModel>
         {
+            [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Code is called with reflection.")]
             public Guid Id { get; set; }
         }
     }

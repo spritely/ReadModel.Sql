@@ -8,6 +8,8 @@
 namespace Spritely.ReadModel.Sql
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using Dapper;
     using Spritely.Cqrs;
 
@@ -38,6 +40,8 @@ namespace Spritely.ReadModel.Sql
         ///     Initializes a new instance of the <see cref="DeleteAllCommandHandler" /> class.
         /// </summary>
         /// <param name="readModelDatabase">The read model database.</param>
+        [SuppressMessage("Microsoft.Usage", "CA2208:InstantiateArgumentExceptionsCorrectly",
+            Justification = "ArgumentExceptions do use argument names, but provide additional information.")]
         public DeleteAllCommandHandler(TDatabase readModelDatabase)
         {
             if (readModelDatabase == null)
@@ -67,7 +71,7 @@ namespace Spritely.ReadModel.Sql
 
             using (var connection = this.readModelDatabase.CreateConnection())
             {
-                connection.Execute(string.Format("delete from [{0}]", command.ModelType));
+                connection.Execute(string.Format(CultureInfo.InvariantCulture, "delete from [{0}]", command.ModelType));
             }
         }
     }
