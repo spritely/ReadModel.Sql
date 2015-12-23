@@ -50,7 +50,7 @@
       <HintPath>..\packages\Spritely.Cqrs.0.6.2\lib\net45\Spritely.Cqrs.dll</HintPath>
     </Reference>
     <Reference Include="Spritely.Test.FluentMigratorSqlDatabase">
-      <HintPath>..\packages\Spritely.Test.FluentMigratorSqlDatabase.0.2.0\lib\net45\Spritely.Test.FluentMigratorSqlDatabase.dll</HintPath>
+      <HintPath>..\packages\Spritely.Test.FluentMigratorSqlDatabase.0.2.1\lib\net45\Spritely.Test.FluentMigratorSqlDatabase.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
